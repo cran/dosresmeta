@@ -1,3 +1,2 @@
-#exportPattern("^[[:alpha:]]+")
-export(dosresmeta)
+export(dosresmeta,gl,hamling)
 import(graphics,stats,utils,mvmeta)

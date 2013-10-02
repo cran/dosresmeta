@@ -1,2 +1,2 @@
-export(dosresmeta,gl,hamling)
+export(dosresmeta,grl,hamling)
 import(graphics,stats,utils,mvmeta)

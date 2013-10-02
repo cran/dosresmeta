@@ -1,5 +1,5 @@
-\name{gl}
-\alias{gl}
+\name{grl}
+\alias{grl}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Greenland and Longnecker method
@@ -8,7 +8,7 @@ Greenland and Longnecker method
 Approximating covariance matrix according to the method described by Greenland and Longnecker (1992).
 }
 \usage{
-gl(cases, n, logrr, v, study, id, data)
+grl(cases, n, logrr, v, study, id, data)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -52,5 +52,5 @@ Alessio Crippa}
 \examples{
 data(cc_ex)
 cc_ex$v<-((cc_ex$logub-cc_ex$loglb)/(2*qnorm(.975)))^2
-gl(case,n,logrr,v,study="cc",data=cc_ex)
+grl(case,n,logrr,v,study="cc",data=cc_ex)
 }

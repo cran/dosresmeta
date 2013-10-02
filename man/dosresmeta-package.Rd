@@ -11,8 +11,8 @@ It allows to estimate a dose-response relation from single and multiple summariz
 \tabular{ll}{
 Package: \tab dosresmeta\cr
 Type: \tab Package\cr
-Version: \tab 1.1\cr
-Date: \tab 2013-09-15\cr
+Version: \tab 1.2\cr
+Date: \tab 2013-10-02\cr
 License: \tab GPL-2\cr
 }
 }

@@ -12,17 +12,14 @@ Studies of Diet and Cancer.
 }
 \usage{data(ex_alcohol_crc)}
 \format{
-  A data frame with 48 observations on the following 10 variables.
+  A data frame with 48 observations on the following 7 variables.
   \describe{
-    \item{\code{obs}}{a numeric vector}
-    \item{\code{logrr}}{a numeric vector}
-    \item{\code{variance}}{a numeric vector}
-    \item{\code{cat}}{a numeric vector}
+    \item{\code{study}}{a factor with levels \code{atm} \code{hpm} \code{io} \code{n1} \code{n2} \code{nt} \code{ntm} \code{nym}}
+    \item{\code{type}}{a factor with levels \code{ir}}
+    \item{\code{dose}}{a numeric vector}
     \item{\code{cases}}{a numeric vector}
     \item{\code{peryears}}{a numeric vector}
-    \item{\code{dose}}{a numeric vector}
-    \item{\code{study}}{a factor with levels \code{atm} \code{hpm} \code{io} \code{n1} \code{n2} \code{nt} \code{ntm} \code{nym}}
-    \item{\code{type}}{a numeric vector}
+    \item{\code{logrr}}{a numeric vector}
     \item{\code{se}}{a numeric vector}
   }
 }

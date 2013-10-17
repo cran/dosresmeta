@@ -1,8 +1,8 @@
 Package: dosresmeta
 Type: Package
 Title: Performing dose-response meta-analysis
-Version: 1.2
-Date: 2013-10-02
+Version: 1.2.1
+Date: 2013-10-17
 Author: Alessio Crippa
 Maintainer: Alessio Crippa <alessio.crippa@ki.se>
 Description: It allows to estimate a dose-response relation from single and multiple summarized data. The trend estimation takes into account the correlation
@@ -10,7 +10,7 @@ Description: It allows to estimate a dose-response relation from single and mult
 		of multivariate random effects meta-analysis to obtain a pooled functional relation.
 License: GPL-2
 Depends: graphics, stats, utils, mvmeta
-Packaged: 2013-10-02 14:00:40 UTC; alecri
+Packaged: 2013-10-17 13:46:02 UTC; alecri
 NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2013-10-02 16:40:51
+Date/Publication: 2013-10-17 16:23:41

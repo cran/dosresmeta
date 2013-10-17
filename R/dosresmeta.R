@@ -17,8 +17,7 @@ x <- model.matrix(attr(mfm, "terms"), data=mfm)
 if (length(mf.study)==1){
 study <- eval(mf.study, data, enclos = sys.frame(sys.parent()))
 id <- 1
-}
-else{
+} else{
 id <- eval(as.name(as.character(mf.study[2])), data, enclos = sys.frame(sys.parent()))
 study <- eval(as.name(as.character(mf.study[3])), data, enclos = sys.frame(sys.parent()))
 }
@@ -29,8 +28,7 @@ n <- eval(as.name(as.character(mf.cov[3])), data, enclos = sys.frame(sys.parent(
 if (length(mf.se)==1){
 se <- eval(mf.se, data, enclos = sys.frame(sys.parent()))
 v <- se^2
-}
-else{
+} else{
 loglb <- eval(as.name(as.character(mf.se[2])),data,enclos=sys.frame(sys.parent()))
 logub <- eval(as.name(as.character(mf.se[3])),data,enclos=sys.frame(sys.parent()))
 v <-( (logub - loglb)/(2*qnorm(alpha/2)) )^2
@@ -88,7 +86,7 @@ Q <- t(logrr[id==j & v!=0] - x[id==j & v!=0,] %*% beta
 Q.pvalue <- 1 - pchisq(Q, length(logrr[id==j & v!=0]) - dim(beta)[1])
 ll<- -.5*(length(logrr[id==j & v!=0]))*log(2*pi) - .5*log(det(ccov)) - .5*Q
 
-    param <- rbind(param,data.frame(id=j,coef=colnames(x),value=beta,
+param <- rbind(param,data.frame(id=j,coef=colnames(x),value=beta,
 se <- diag(vb)^.5,z=beta.score,pvalue=beta.pvalue))
 fit.stat <- rbind(fit.stat,data.frame(id=j,Q=Q,pvalue=Q.pvalue,logll=ll))
 covparam <- c(covparam,list(vb))
@@ -101,21 +99,20 @@ solve(t(chol(ccov))) %*% as.matrix(mfm[id==j & v!=0,])))
 
 if (max(id)==1){
 procedure <- list()        
-    }
-else {
+} else {
 coeff <- data.frame()
     for (j in 1:max(id)){
       coeff <- rbind(coeff, param[param$id==j,]$value)
-    }
-    colnames(coeff) <- param$coef[param$id==1]
+}
+colnames(coeff) <- param$coef[param$id==1]
 procedure <- mvmeta(as.matrix(coeff), covparam, method=method)     
 
 #R2 tool
-  mod <- lm(formula,data=tmfm)
-  colnames(tmfm)[-1] <- paste("t",colnames(tmfm)[-1],sep="")
+mod <- lm(formula,data=tmfm)
+colnames(tmfm)[-1] <- paste("t",colnames(tmfm)[-1],sep="")
 procedure$tdata <- tmfm
- procedure$R2 <- summary(mod)$r.squared
-  procedure$R2adj <- summary(mod)$adj.r.squared
+procedure$R2 <- summary(mod)$r.squared
+procedure$R2adj <- summary(mod)$adj.r.squared
 }
 
 colnames(param)<-list("id","","Estimate","Std. Error","z value","Pr(>|z|)" )  
@@ -124,7 +121,7 @@ colnames(fit.stat)<-list("id","Q","Pr(>chi2)","log ll")
 procedure$Param<-param
 procedure$fit.stat<-fit.stat
 procedure$Ccov<-Ccov
-  procedure$covparam<-covparam
+procedure$covparam<-covparam
 procedure$psnumber<-data.frame(cases1,n1)
 
 procedure

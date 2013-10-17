@@ -24,36 +24,31 @@ if( missing(id) ) id <- 1
 
 ## Function to be optimized
 ## For more details see Hamling 2007
-fun<-function(cc, ris=F){
+fun <- function(cc, ris=F){
 A <- cc[1]
 B <- cc[2]
 
-      if ( (study[id==j][1] == "cc" | study[id==j][1] == "ir") |
-(study[id==j][1] == 1 | study[id==j][1] == 2) ){
-        cases1[v[id==j]!=0] <- (1 + (A/B)*exp(logrr[id==j & v!=0]))/(v[id==j & v!=0] - 1/A -1/B)
-          n1[id==j & v!=0] <- (1 + B/(A*exp(logrr[id==j & v!=0]))) / (v[id==j & v!=0]-1/A-1/B)
+      if (study[id==j][1] == "cc" | study[id==j][1] == 1) {
+        cases1 <- (1 + (A/B) * exp(logrr[id==j & v!=0])) / (v[id==j & v!=0] - 1/A -1/B)
+          n1 <- (1 + B / (A * exp(logrr[id==j & v!=0]))) / (v[id==j & v!=0] - 1/A - 1/B)
         }
-        if (study[id==j][1] == "ci" | study[id==j][1] == 3){ 
-          cases1[v[id==j]!=0] <- (1-(A/B)*exp(logrr[id==j & v!=0])) / (v[id==j & v!=0]-1/A+1/B)
-          n1[v[id==j]!=0] <- (B/(A*exp(logrr[id==j & v!=0])-1))/(v[id==j & v!=0]- 1/A + 1/B)
+        if ((study[id==j][1] == "ir" | study[id==j][1] == 2) |
+(study[id==j][1] == "ci" | study[id==j][1] == 3)){ 
+          cases1 <- 1 / (v[id==j & v!=0] - 1/A)
+          n1 <- (B / ( A * exp(logrr[id==j & v!=0]) ) ) / (v[id==j & v!=0] - 1/A )
         }
-       ifelse(ris==F,{
-        p1<- B / (B + sum(n1, na.rm = T))
-        z1<-(B + sum(n1, na.rm = T)) / (A + sum(cases1, na.rm = T))
-          ( (p - p1) / p)^2 + ( (z - z1) /z )^2
-},{
-cases1[id==j & v==0] <- A
-n1[id==j & v==0] <- B
-        return(data.frame(cases1 = cases1[!is.na(cases1)],
-n1=n1[!is.na(n1)]))
-})
+      if (ris==F) {
+        p1 <- B / (B + sum(n1))
+        z1<- (B + sum(n1)) / (A + sum(cases1))
+(((p - p1) / p)^2 + ((z - z1) / z)^2)
+} else {
+        return( data.frame(cases1 = c(A, cases1), n1 = c(B, n1)) )
+}
 }
 
 ## Obtained pscounts for several studies
-pscounts<-data.frame()
+pscounts <- data.frame()
 for (j in 1 : max(id)){
-cases1 <- c()
-n1 <- c()
 if (study[id==j][1] == "cc" | study[id==j][1] == 1){
       controls <- n[id==j] - cases[id==j]
       p <- controls[v[id==j]==0]/sum(controls)

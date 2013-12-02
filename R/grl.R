@@ -63,7 +63,7 @@ data.frame(cases1,n1)
 
 ## Obtained pscounts for several studies
 pscounts<-data.frame()
-for ( j in 1 : max(id) ){
+for ( j in unique(id) ){
 pscounts <- rbind(pscounts, fun(cases[id==j & v!=0]))
 }
 pscounts

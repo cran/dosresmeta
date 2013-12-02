@@ -50,7 +50,7 @@ cases1 <- grl(cases, n, logrr, v, study, id)$cases1
 n1 <- grl(cases, n, logrr, v, study, id)$n1
 }
 
-for (j in 1:max(id)){
+for (j in unique(id)){
 if (psmethod=="h" | psmethod=="gl"){
 if (study[id==j][1] == "cc" | study[id==j][1] ==1 ){
 s0 <- 1/cases1[id==j & v==0] + 1/n1[id==j & v==0]
@@ -97,11 +97,11 @@ tmfm <- rbind(tmfm, data.frame(id=j,
 solve(t(chol(ccov))) %*% as.matrix(mfm[id==j & v!=0,])))
 }
 
-if (max(id)==1){
+if (length(unique(id))==1){
 procedure <- list()        
 } else {
 coeff <- data.frame()
-    for (j in 1:max(id)){
+    for (j in unique(id)){
       coeff <- rbind(coeff, param[param$id==j,]$value)
 }
 colnames(coeff) <- param$coef[param$id==1]

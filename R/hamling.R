@@ -48,7 +48,7 @@ B <- cc[2]
 
 ## Obtained pscounts for several studies
 pscounts <- data.frame()
-for (j in 1 : max(id)){
+for (j in unique(id)){
 if (study[id==j][1] == "cc" | study[id==j][1] == 1){
       controls <- n[id==j] - cases[id==j]
       p <- controls[v[id==j]==0]/sum(controls)

@@ -1,8 +1,8 @@
-61d807f0b4c9c23ef242d62cde6c6ddb *DESCRIPTION
+5073596237fa78101fb3398ff0a3e4c9 *DESCRIPTION
 afd02fa56d7af22dd67b148cfbe75291 *NAMESPACE
-255d19a7f0d1cb02c4c4d979c37f302f *R/dosresmeta.R
-1bbb8e992daf3644bbbfc98fbe5520ad *R/grl.R
-b5627e0c141b5d153b49ff05b68c3c15 *R/hamling.R
+f7911b81e1b79dbc756235af57a9b99e *R/dosresmeta.R
+7abb9ef31ac0b3fe1c5f5aea3e54801c *R/grl.R
+9fe180761c40a5d9f2b5904a699f9011 *R/hamling.R
 5a2921938b14139144700c083f2535d7 *data/cc_ex.rda
 ae22e72817bea46dd169784ca787eef4 *data/ex_alcohol_crc.rda
 6f77cc263ceb6743435597a7f226c30b *man/cc_ex.Rd

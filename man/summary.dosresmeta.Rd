@@ -1,0 +1,84 @@
+\name{print.dosresmeta}
+\alias{print}
+\alias{print.dosresmeta}
+\alias{print.summary.dosresmeta}
+\alias{summary}
+\alias{summary.dosresmeta}
+\title{summarizing dosresmeta Models}
+\usage{
+\method{print}{dosresmeta}(x, digits = 4, ...)
+
+\method{summary}{dosresmeta}(object, ci.level = 0.95, ...)
+
+\method{print}{summary.dosresmeta}(x, digits = 4, ...)
+}
+\arguments{
+  \item{object}{an object of class \code{dosresmeta}
+  produced by \code{\link{dosresmeta}}.}
+
+  \item{x}{an object of class \code{dosresmeta} or
+  \code{summary.dosresmeta} produced by
+  \code{\link{dosresmeta}} or \code{summary.dosresmeta},
+  respectively.}
+
+  \item{ci.level}{the confidence level used for defining
+  the confidence intervals for the estimates of the
+  (fixed-effects) coefficients.}
+
+  \item{digits}{an integer specifying the number of digits
+  to which printed results must be rounded.}
+
+  \item{\dots}{further arguments passed to or from other
+  methods.}
+}
+\value{
+The \code{summary} method function for \code{dosresmeta}
+objects produces a list of class
+"\code{summary.dosresmeta}" which resembles a list object
+of class \code{\link{summary.mvmeta}}.
+
+As usual, the \code{print} method functions for classes
+"\code{dosresmeta}" and "\code{summary.dosresmeta}" do not
+return any value.
+}
+\description{
+Print and summary method functions for dose-response models
+represented in objects of class "\code{dosresmeta}".
+}
+\details{
+the \code{print} method for class \code{dosresmeta} only
+returns basic information of the fitted model, namely the
+call, estimated (fixed-effects) coefficients, and
+dimensions. If multiple studies are included in the
+meta-analysis, it returns also the usual fit statistics
+(log-likelihood, AIC, BIC).
+
+The \code{summary} method function computes additional
+statistics and tests, and produces a list object of class
+\code{summary.dosresmeta}. The \code{print} method function
+for this class, depending on the number of studies included
+in the analysis, shows additional information, such as
+tables reporting the estimates for the fixed and
+random-effects parts of the model, Chi-square test for
+model significance, Cochran Q test for heterogeneity and
+I-square.
+}
+\examples{
+## Load data and run the model
+data("alcohol_cvd")
+model <- dosresmeta(formula = logrr ~ dose + I(dose^2), type = type, id = id,
+                   se = se, cases = cases, n = n, data = alcohol_cvd)
+## Defult print
+model
+## Specify digits
+print(model, digit = 2)
+## summary with 90th confidence intervals
+summary(model, ci.level = .8)
+}
+\author{
+Alessio Crippa, \email{alessio.crippa@ki.se}
+}
+\seealso{
+\code{\link{dosresmeta}}, \code{\link{summary}}
+}
+

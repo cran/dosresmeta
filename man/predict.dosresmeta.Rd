@@ -1,0 +1,121 @@
+\name{predict.dosresmeta}
+\alias{predict}
+\alias{predict.dosresmeta}
+\title{Predicted Values from dosresmeta Models}
+\usage{
+\method{predict}{dosresmeta}(object, newdata, xref, se.incl = FALSE,
+  expo = TRUE, ci.incl = TRUE, ci.level = 0.95, order = TRUE, delta,
+  ...)
+}
+\arguments{
+  \item{object}{an object of class \code{dosreseta}.}
+
+  \item{newdata}{an optional data frame or matrix in which
+  to look for variables values with which to predict from
+  dose-response models.}
+
+  \item{xref}{an optional scalar to indicate which levels
+  should serve as referent for the predicted relative
+  risks. See details.}
+
+  \item{expo}{logical switch indicating if the prediction
+  should be on the exponential scale.}
+
+  \item{se.incl}{logical switch indicating if standard
+  errors need to be included.}
+
+  \item{ci.incl}{logical switch indicating if confidence
+  intervals need to be included.}
+
+  \item{ci.level}{a numerical value between 0 and 1,
+  specifying the confidence level for the computation of
+  confidence intervals.}
+
+  \item{order}{logical to indicate if the predictions need
+  to be sorted by exposure levels.}
+
+  \item{delta}{an optional scalar to specify to predict the
+  linear trend related to that increase.}
+
+  \item{\dots}{further arguments passed to or from other
+  methods.}
+}
+\value{
+The results are returned structured in a data frame.
+}
+\description{
+This method function computes predictions from fitted
+dose-response models represented in objects of class
+"\code{dosresmeta}", optionally for a new set of exposure
+levels. Predictions are optionally accompanied by
+confidence intervals and/or standard errors for the
+predictions.
+}
+\details{
+The method function \code{predict} produces predicted
+values from \code{dosresmeta} objects. When more than one
+study is included in the analysis, estimated predictions
+are only based on the fixed part of the model.
+
+If \code{newdata} is omitted, the predictions are based on
+the data used for the fit. If \code{xref} is provided, it
+must be equal to one of the modeled values. If not
+provided, the minimum modeled referent value will be used
+as referent for the predicted relative risks
+
+If \code{newdata} is specified, it should include all the
+variables used to model the dose-response relation. Again,
+if specified, \code{xref} must be equal to one of the value
+in the newdata. If omitted, the minimum value for the
+newdara will be used as referent.
+
+Only for the linear trend it is possible to specify the
+predicted increase of risk correspongind to an increase
+equal to \code{delta} argument.
+
+By default (\code{order = TRUE}), the predictions are
+sorted by exposure levels to facilitate understanding and
+possible graphical presentation of the results.
+}
+\examples{
+## Load data and run the model
+data("alcohol_cvd")
+model <- dosresmeta(formula = logrr ~ dose + I(dose^2), type = type, id = id,
+                   se = se, cases = cases, n = n, data = alcohol_cvd)
+
+## Predicted modeled data
+predict(model, order = FALSE)
+
+## Plot predicted dose-response relation
+with(predict(model), {
+ plot(dose, pred, log = "y", type = "l",
+      xlim = c(0, 45), ylim = c(.4, 2))
+ lines(dose,  ci.lb, lty = 2)
+ lines(dose, ci.ub, lty = 2)
+ rug(dose, quiet = TRUE)
+})
+
+## Prediction for new values
+newdata <- data.frame(dose = seq(0, 50, 1))
+predict(model, newdata)
+
+## Smoother plot
+with(predict(model, newdata),{
+ plot(dose, pred, log = "y", type = "l",
+               ylim = c(.4, 2))
+ lines(dose, ci.lb, lty = 2)
+ lines(dose, ci.ub, lty = 2)
+ rug(alcohol_cvd$dose, quiet = TRUE)
+})
+
+## Tabular results
+newdata <- data.frame(dose = seq(0,50,5))
+round(predict(model, newdata), 2)
+}
+\author{
+Alessio Crippa, \email{alessio.crippa@ki.se}
+}
+\seealso{
+\code{\link{dosresmeta}}, \code{\link{predict}}
+}
+

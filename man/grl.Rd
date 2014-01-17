@@ -1,56 +1,104 @@
 \name{grl}
 \alias{grl}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{
-Greenland and Longnecker method
-}
-\description{
-Approximating covariance matrix according to the method described by Greenland and Longnecker (1992).
-}
+\title{Approximating effective-counts as proposed by Greenland & Longnecker}
 \usage{
-grl(cases, n, logrr, v, study, id, data)
+grl(logrr, v, cases, n, type, id, data, se, lb, ub, order = TRUE,
+  alpha = 0.05)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{cases}{
-	The variable (or vector) reporting the number of cases, regardless of the type of study.
-}
-  \item{n}{
-	The variable(or vector) reporting the number of the size (for each exposure) of the study for case-control and cumulative
-	incidence data, the Person-Times (for each exposure) for incidence rate data.
-}
-  \item{logrr}{
-	The variable (or vector) reporting the log relative risks for each exposure
-}
-  \item{v}{
-	The variable (or vector) reporting the variance of published log relative risks. If not already in the dataset, it needs to be calculated by the user.
-}
-  \item{study}{
-	the variable (or vector) or value reporting the type of study. The values for the variable must be "\code{cc}", "\code{ir}", "\code{ci}" for
-case-control, incidence-rate and cumulative-incidence data respectively.
-}
-  \item{id}{
-	an optional variable (or vector) reporting the id of the studies. 
-}
-  \item{data}{
-	an optional dataframe containing the variables needed to approximate the covariance matrix.
-}
-}
-\details{
-No further details required.
+  \item{logrr}{a vector to specify the reported log
+  relative risks.}
+
+  \item{v}{a vector to specify the variances of the
+  reported log relative risks. Alternatively the user can
+  provide the standard error in the \code{se} argument, or
+  the confidence interval for the reported relative risks
+  in the \code{lb} and \code{ub} arguments.}
+
+  \item{cases}{a vector to specify the number of cases for
+  each exposure level.}
+
+  \item{n}{a vector to specify the total number of subjects
+  for each exposure level. For incidence-rate data \code{n}
+  indicates the amount of person-time for each exposure
+  level.}
+
+  \item{type}{a vector (or a string) to specify the
+  study-specific design. The values for case-control,
+  incidence-rate, and cumulative incidence data are
+  \code{cc}, \code{ir}, and \code{ci} (or 1, 2, and 3),
+  respectively.}
+
+  \item{id}{an optional vector to specify the id variable
+  for the studies included in the analysis.}
+
+  \item{data}{an optional data frame (or object coercible
+  by \code{\link{as.data.frame}} to a data frame)
+  containing the variables in the previous arguments.}
+
+  \item{se}{an optional vector to specify the standard
+  error of the reported log relative risks; needed if
+  \code{v} is not provided.}
+
+  \item{lb}{an optional vector to specify the lower bound
+  of the confidence interval for the reported relative
+  risks; needed if \code{v} and \code{se} are not
+  provided.}
+
+  \item{ub}{an optional vector to specify the upper bound
+  of the confidence interval for the reported relative
+  risks; needed if \code{v} and \code{se} are not
+  provided.}
+
+  \item{order}{a logical value to specify if the vectors
+  need to be sorted. See details.}
+
+  \item{alpha}{a scalar to specify the alpha nominal value
+  used in the published data, by defaul equal to .05.}
 }
 \value{
-A matrix reporting the pseudo-counts originated from the pubblished data.
+The results are returned structured in a data frame.
 }
-\references{
-Greenland, S.,  Longnecker, M. P. (1992). Methods for trend estimation from summarized dose-response data, 
-with applications to meta-analysis. American journal of epidemiology, 135(11), 1301-1309.
+\description{
+The function \code{grl} reconstructs the set of
+pseudo-numbers (or "effective" numbers) of cases and
+non-cases consistent with the input data (log relative
+risks) for either a single or multiple summarized data. The
+method was proposed in 1992 by Greenland and Longnecker.
+}
+\details{
+The function reconstructs the effective counts
+corresponding to the multivariable adjusted log relative
+risks as well as their standard errors. A unique solution
+is guaranteed by keeping the margins of the table of
+pseudo-counts equal to the margins of the crude or
+unadjusted data (Greenland and Longnecker 1992). The
+function requires the data to be sorted by id and in such a
+way that the referent values correspond to the first record
+for each study. This is automatically done by the function
+when \code{order = TRUE} (default).
+}
+\examples{
+data("alcohol_cvd")
+grl(logrr = logrr, se = se, cases = cases, n = n, type = type,
+ id = id, data = alcohol_cvd)
 }
 \author{
-Alessio Crippa}
-
-\examples{
-data(cc_ex)
-cc_ex$v<-((cc_ex$logub-cc_ex$loglb)/(2*qnorm(.975)))^2
-grl(case,n,logrr,v,study="cc",data=cc_ex)
+Alessio Crippa, \email{alessio.crippa@ki.se}
 }
+\references{
+Greenland, S., Longnecker, M. P. (1992). Methods for trend
+estimation from summarized dose-response data, with
+applications to meta-analysis. American journal of
+epidemiology, 135(11), 1301-1309.
+
+Orsini, N., Li, R., Wolk, A., Khudyakov, P., Spiegelman, D.
+(2012). Meta-analysis for linear and nonlinear
+dose-response relations: examples, an evaluation of
+approximations, and software. American journal of
+epidemiology, 175(1), 66-73.
+}
+\seealso{
+\code{\link{hamling}}, \code{\link{dosresmeta}}
+}
+

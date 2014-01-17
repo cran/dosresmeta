@@ -1,41 +1,37 @@
+\docType{data}
 \name{cc_ex}
 \alias{cc_ex}
-\docType{data}
-\title{
-Single case-control study
-}
+\title{Case-control data on alcohol and breast cancer risk}
+\format{A data frame with 4 observations on the following 10 variables:
+\tabular{ll}{
+\code{gday} \tab label for exposure levels.\cr
+\code{dose} \tab assigned dose level.\cr
+\code{case} \tab number of cases for each exposure level.\cr
+\code{control} \tab number of controls for each exposure level.\cr
+\code{n} \tab total number of subjects for each exposure level.\cr
+\code{crudeor} \tab unadjusted odds ratios for each exposure level.\cr
+\code{adjrr} \tab adjusted odds ratios for each exposure level.\cr
+\code{lb} \tab lower bound for the confidence limit of the adjusted odds ratios.\cr
+\code{ub} \tab upper bound for the confidence limit of the adjusted odds ratios.\cr
+\code{logrr} \tab natural logarithm of adjusted odds ratios.\cr
+}}
 \description{
-Case-control data on alcohol and breast cancer risk (Rohan and McMichael 1988)
+The dataset reports the summarized dose-response results
+from a case-control study on alcohol and breast cancer,
+first presented by Rohan and McMichael.
 }
-\usage{data(cc_ex)}
-\format{
-  A data frame with 4 observations on the following 12 variables.
-  \describe{
-    \item{\code{gday}}{a character vector}
-    \item{\code{dose}}{a numeric vector}
-    \item{\code{case}}{a numeric vector}
-    \item{\code{control}}{a numeric vector}
-    \item{\code{n}}{a numeric vector}
-    \item{\code{crudeor}}{a numeric vector}
-    \item{\code{adjrr}}{a numeric vector}
-    \item{\code{lb}}{a numeric vector}
-    \item{\code{ub}}{a numeric vector}
-    \item{\code{logrr}}{a numeric vector}
-    \item{\code{loglb}}{a numeric vector}
-    \item{\code{logub}}{a numeric vector}
-  }
-}
-\details{
-There are no more details required
-}
-\source{
-Orsini, N., Bellocco, R., Greenland, S. (2006). Generalized least squares for trend estimation of summarized dose-response data. Stata Journal, 6(1), 40.
+\author{
+Alessio Crippa, <\email{alessio.crippa@ki.se}>
 }
 \references{
-There are no references
+Rohan, T. E., McMichael, A. J. (1988). Alcohol consumption
+and risk op breast cancer. International journal of cancer,
+41(5), 695-699.
+
+Greenland, S., Longnecker, M. P. (1992). Methods for trend
+estimation from summarized dose-response data, with
+applications to meta-analysis. American journal of
+epidemiology, 135(11), 1301-1309.
 }
-\examples{
-data(cc_ex)
-## maybe str(cc_ex) ; plot(cc_ex) ...
-}
-\keyword{datasets}
+\keyword{data}
+

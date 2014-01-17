@@ -1,31 +1,61 @@
+\docType{package}
 \name{dosresmeta-package}
 \alias{dosresmeta-package}
-\docType{package}
-\title{
-Performing dose-response meta-analysis  
-}
+\title{Performing multivariate dose-response meta-analysis}
 \description{
-It allows to estimate a dose-response relation from single and multiple summarized data. The trend estimation takes into account the correlationamong log relative risks and use it to efficiently estimate the dose-response relation for each study included in the anlysis. The results are then combined according to principles of multivariate random effects meta-analysis to obtain a pooled functional relation.
+The package \code{dosresmeta} consists of a collection of
+functions to estimate a dose-response relation from either
+a single or multiple summarized dose-response data. The
+method was first formalized by Greenland and Longnecker
+(1992); the authors described how to approximate the
+covariances of reported log relative risks and how use them
+to efficiently estimate an exposure-disease relation. The
+study specific estimates are combined through multivariate
+random-effect meta-analytical model, to obtaind a pooled
+dose-response association.
 }
 \details{
-\tabular{ll}{
-Package: \tab dosresmeta\cr
-Type: \tab Package\cr
-Version: \tab 1.2\cr
-Date: \tab 2013-10-02\cr
-License: \tab GPL-2\cr
+\tabular{ll}{ Package: \tab dosresmeta\cr Type: \tab
+Package\cr Version: \tab 1.3\cr Date: \tab 2013-12-27\cr
+License: \tab GPL-2\cr }
 }
-}
-\author{Alessio Crippa
-
-Maintainer: Alessio Crippa <alessio.crippa@ki.se>
+\author{
+Alessio Crippa, \email{alessio.crippa@ki.se}
 }
 \references{
-Orsini, N., Bellocco, R., & Greenland, S. (2006). Generalized least squares for trend estimation of summarized dose-response data. Stata Journal, 6(1), 40.
+Greenland, S., Longnecker, M. P. (1992). Methods for trend
+estimation from summarized dose-response data, with
+applications to meta-analysis. American journal of
+epidemiology, 135(11), 1301-1309.
 
-Gasparrini, A., Armstrong, B., & Kenward, M. G. (2012). Multivariate meta-analysis for non-linear and other multi-parameter associations. Statistics in Medicine, 31(29), 3821-3839.
+Orsini, N., Bellocco, R., Greenland, S. (2006). Generalized
+least squares for trend estimation of summarized
+dose-response data. Stata Journal, 6(1), 40.
+
+Hamling, J., Lee, P., Weitkunat, R., Ambuhl, M. (2008).
+Facilitating meta-analyses by deriving relative effect and
+precision estimates for alternative comparisons from a set
+of estimates presented by exposure level or disease
+category. Statistics in medicine, 27(7), 954-970.
+
+Orsini, N., Li, R., Wolk, A., Khudyakov, P., Spiegelman, D.
+(2012). Meta-analysis for linear and nonlinear
+dose-response relations: examples, an evaluation of
+approximations, and software. American journal of
+epidemiology, 175(1), 66-73.
+
+Gasparrini, A., Armstrong, B., Kenward, M. G. (2012).
+Multivariate meta-analysis for non-linear and other
+multi-parameter associations. Statistics in Medicine,
+31(29), 3821-3839.
+
+Liu, Q., Cook, N. R., Bergstrom, A., Hsieh, C. C. (2009). A
+two-stage hierarchical regression model for meta-analysis
+of epidemiologic nonlinear dose-response data.
+Computational Statistics & Data Analysis, 53(12),
+4157-4167.
 }
-\keyword{ package }
 \seealso{
-	\code{\link{mvmeta}}
+\code{\link{dosresmeta}}, \code{\link{mvmeta}}
 }
+

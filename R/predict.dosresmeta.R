@@ -67,11 +67,10 @@
 #'newdata <- data.frame(dose = seq(0,50,5))
 #'round(predict(model, newdata), 2)
 #' 
+#' @rdname predict.dosresmeta
 #' @method predict dosresmeta
 #' @S3method predict dosresmeta
-#' @aliases predict predict.dosresmeta
-#' @export
-#' 
+#' @export predict.dosresmeta
 #' 
 predict.dosresmeta <- function(object, newdata, xref, se.incl = FALSE, expo = TRUE, 
                                ci.incl = TRUE, ci.level = .95, order = TRUE, delta, ...)
@@ -114,6 +113,9 @@ predict.dosresmeta <- function(object, newdata, xref, se.incl = FALSE, expo = TR
   if (se.incl == T) fit <- cbind(fit, se = se)
   fit <- as.data.frame(fit)
   if (order == T) fit <- fit[order(fit[, 1]),]
-  if (!missing(delta)) fit <- fit[2, ]
+  if (!missing(delta)){
+    fit <- fit[2, ]
+    rownames(fit) <- ""
+  }
   fit
 }

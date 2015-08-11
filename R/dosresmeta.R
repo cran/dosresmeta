@@ -8,7 +8,7 @@
 #' provided in the \code{data} below.
 #' @param id an optional vector to specify the id variable for the studies included in the analysis.
 #' @param type a vector (or a string) to specify the study-specific design. The values for case-control, incidence-rate, and cumulative incidence data are \code{cc},
-#' \code{ir}, and \code{ci} (or 1, 2, and 3), respectively.
+#' \code{ir}, and \code{ci}.
 #' @param v a vector to specify the variances of the reported log relative risks. Alternatively the user can provide the standard error in the \code{se} argument, or the confidence interval for the reported relative risks 
 #' in the \code{lb} and \code{ub} arguments.
 #' @param cases a vector to specify the number of cases for each exposure level.
@@ -20,7 +20,7 @@
 #' @param lb an optional vector to specify the lower bound of the confidence interval for the reported relative risks; needed if \code{v} and \code{se} are not provided.
 #' @param ub an optional vector to specify the upper bound of the confidence interval for the reported relative risks; needed if \code{v} and \code{se} are not provided.
 #' @param covariance method to approximate the coviariance among set of reported log relative risks, "\code{gl}" for the method proposed by Greenland and Longnecker, "\code{h}" for the method proposed by Hamling (default), "\code{fl}" for absolute floated
-#'  risks presented by Easton D., or "\code{user}" if provided by the user.
+#'  risks presented by Easton D., "\code{user}" if provided by the user, or "\code{independent}" for assuming independence.
 #' @param method  method used to estimate the pooled dose-response relation: "\code{fixed}" for fixed-effects models, "\code{ml}" or "\code{reml}" for random-effects models fitted through (restricted) maximum likelihood, and "\code{mm}" for random-effects models fitted through 
 #' method of moments. The default method is "\code{reml}". See \code{\link{mvmeta}}.
 #' @param fcov an optional vector to specify the avarage covariances for the set of reported log relative risks. It is required if \code{covariance = "fl"}.
@@ -139,16 +139,13 @@ dosresmeta <- function(formula, id, type, v, cases, n,
   mfm <- model.frame(formula, data)
   logrr <- as.matrix(model.response(mfm, "numeric"))
   x <- model.matrix(attr(mfm, "terms"), data = mfm)
-  if (center == T){
-    in1 <- rownames(data.frame(id, v))
-    index <- order(id, v)
-    x <- as.matrix(x[index, ])
-    for(k in 1:ncol(x)){
-      x[, k] <- unlist(tapply(x[, k], id, function(x) x - x[1]))
-    }
-    rownames(x) <- index
-    x <- as.matrix(x[in1, ]) 
-  }
+   if (center == T){
+      for (i in levels(id)){
+         x[id == i, ] <- scale(x[id == i, , drop = FALSE], 
+                                             t(x[id == i & v== 0, ]), 
+                                             scale = FALSE)
+      }
+   }
   xref <- min(unlist(tapply(x[, 1], id, head, n = 1)))
   fit <- list()
   if (covariance == "gl") {
@@ -185,8 +182,11 @@ dosresmeta <- function(formula, id, type, v, cases, n,
                      nrow = length(v[id == j & v != 0]))
       diag(ccov) <- v[id == j & v != 0]
     }
+    if (covariance == "independent") {
+      ccov <- diag(v[id == j & v != 0])
+    }
     if (covariance == "user") {
-      ccov <- ucov[which(unique(id) == j)]
+      ccov <- ucov[[which(unique(id) == j)]]
     }
     Ccov <- c(Ccov, list(ccov))
     L <- chol(solve(ccov))
@@ -195,9 +195,9 @@ dosresmeta <- function(formula, id, type, v, cases, n,
     bi <- vbi %*% crossprod(L %*% x[id == j & v != 0, ], L %*% logrr[id == j & v != 0])
     b <- c(b, list(bi))
   }
-  tmfm <- solve(t(as.matrix(bdiag(Ccov)))) %*% as.matrix(mfm[v != 0, ])
-  tmod <- lm(tmfm[, 1] ~ tmfm[, -1])
-  colnames(tmfm) <- paste0("t", colnames(tmfm))  
+  tmfm <- solve(t(chol(as.matrix(bdiag(Ccov))))) %*% cbind(logrr, x)[v != 0, ]
+  tmod <- lm(tmfm[, 1] ~ 0 + tmfm[, -1])
+  colnames(tmfm) <- paste0("t", colnames(as.matrix(mfm)))
   if (length(unique(id)) == 1){
     fit$coefficients <- t(as.matrix(bi))
     fit$vcov <- as.matrix(vbi)

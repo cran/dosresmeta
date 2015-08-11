@@ -1,4 +1,4 @@
-#' Performing multivariate dose-response meta-analysis 
+#' @title Performing Multivariate Dose-Response Meta-Analysis 
 #' 
 #' @name dosresmeta-package
 #' 
@@ -7,14 +7,17 @@
 #' to efficiently estimate an exposure-disease relation. The study specific estimates are combined through multivariate random-effect meta-analytical model, to obtaind
 #' a pooled dose-response association.
 #' 
+#' 
 #' @details
 #' \tabular{ll}{
 #' Package: \tab dosresmeta\cr
 #' Type: \tab Package\cr
-#' Version: \tab 1.3\cr
-#' Date: \tab 2013-12-27\cr
+#' Version: \tab 1.3.2\cr
+#' Date: \tab 2015-08-11\cr
 #' License: \tab GPL-2\cr
 #' }
+#' @import mvmeta aod
+#' @importFrom stats BIC delete.response lm model.frame model.matrix model.response optim pchisq pnorm qnorm symnum
 #' @docType package
 #' @author Alessio Crippa, \email{alessio.crippa@@ki.se}
 #' @references 

@@ -9,8 +9,7 @@
 #' @param \dots further arguments passed to or from other methods.
 #'
 #' @details the \code{print} method for class \code{dosresmeta} only returns basic information of the fitted model, namely the call, 
-#' estimated (fixed-effects) coefficients, and dimensions. If multiple studies are included in the meta-analysis, it returns 
-#' also the usual fit statistics (log-likelihood, AIC, BIC).
+#' estimated (fixed-effects) coefficients, and dimensions).
 #' 
 #' The \code{summary} method function computes additional statistics and tests, and produces a list object of class \code{summary.dosresmeta}. 
 #' The \code{print} method function for this class, depending on the number of studies included in the analysis, shows additional information, 
@@ -40,9 +39,8 @@
 #'
 #' @rdname summary.dosresmeta
 #' @method print dosresmeta
+#' @export print.dosresmeta
 #' @S3method print dosresmeta
-#' @aliases print print.dosresmeta
-#' @export
 #' 
 
 print.dosresmeta <- function (x, digits = 4, ...) 
@@ -54,22 +52,15 @@ print.dosresmeta <- function (x, digits = 4, ...)
   cat("\n")
   if (x$dim$m > 1){
     cat(x$dim$m, " studies, ", x$df$nall, " values, ", x$df$fixed, " fixed and ", 
-        x$df$random, " random-effects parameters", "\n", sep = "")
-    if (!x$method %in% c("mm", "vc")) {
-      table <- c(x$logLik, AIC(x), BIC(x))
-      names(table) <- c("logLik", "AIC", "BIC")
-      table <- formatC(table, digits = digits, format = "f")
-      print(table, quote = FALSE, right = TRUE, print.gap = 2)
-    }
+        x$df$random, " random-effects parameters", sep = "")
   }
   cat("\n")
 }
 
 #' @rdname summary.dosresmeta
 #' @method summary dosresmeta
+#' @export summary.dosresmeta
 #' @S3method summary dosresmeta
-#' @aliases summary summary.dosresmeta
-#' @export 
 #' 
 summary.dosresmeta <- function (object, ci.level = 0.95, ...) 
 {
@@ -121,9 +112,8 @@ summary.dosresmeta <- function (object, ci.level = 0.95, ...)
 
 #' @rdname summary.dosresmeta
 #' @method print summary.dosresmeta
+#' @export print.summary.dosresmeta
 #' @S3method print summary.dosresmeta
-#' @aliases print print.summary.dosresmeta
-#' @export
 #' 
 print.summary.dosresmeta <- function (x, digits = 4, ...) 
 {
@@ -176,20 +166,14 @@ print.summary.dosresmeta <- function (x, digits = 4, ...)
   if(x$dim$m > 1){
     Q <- formatC(x$qstat$Q, digits = digits, format = "f")
     pvalue <- formatC(x$qstat$pvalue, digits = digits, format = "f")
-    i2 <- formatC(pmax((x$qstat$Q - x$qstat$df)/x$qstat$Q * 100, 1), digits = 1, format = "f")
+    i2 <- formatC(pmax((x$qstat$Q - x$qstat$df)/x$qstat$Q * 100, 0), digits = 1, format = "f")
     cat(if (x$qstat$k == 1) "Uni" else "Multi", "variate ", "Cochran Q-test for ", 
         if (x$qstat$residual) "residual ", "heterogeneity:", "\n", sep = "")
     cat("Q = ", Q[1], " (df = ", x$qstat$df[1], "), p-value = ", pvalue[1], "\n", sep = "")
     cat("I-square statistic = ", i2[1], "%", "\n\n", sep = "")
     cat(x$dim$m, " studies, ", x$df$nall, " observations, ", 
         x$df$fixed, " fixed and ", x$df$random, " random-effects parameters", 
-        "\n", sep = "")
-    if (!x$method %in% c("mm", "vc")) {
-      table <- c(x$logLik, x$AIC, x$BIC)
-      names(table) <- c("logLik", "AIC", "BIC")
-      table <- formatC(table, digits = digits, format = "f")
-      print(table, quote = FALSE, right = TRUE, print.gap = 2)
-    }
+        sep = "")
   }
   cat("\n")
 }

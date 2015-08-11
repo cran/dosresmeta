@@ -24,9 +24,8 @@
 #'vcov(model)
 #' 
 #' @method coef dosresmeta  
+#' @export coef.dosresmeta
 #' @S3method coef dosresmeta
-#' @aliases coef coef.dosresmeta
-#' @export
 #' 
 coef.dosresmeta <- function (object, format = c("vector", "matrix"), ...)  {
   coef <- object$coefficients
@@ -42,9 +41,8 @@ coef.dosresmeta <- function (object, format = c("vector", "matrix"), ...)  {
 
 #' @rdname coef.dosresmeta
 #' @method vcov dosresmeta
+#' @export vcov.dosresmeta
 #' @S3method vcov dosresmeta
-#' @aliases vcov vcov.dosremeta
-#' @export
 #' 
 vcov.dosresmeta <- function (object, ...) 
 {

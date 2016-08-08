@@ -38,13 +38,17 @@
 #' @author Alessio Crippa, \email{alessio.crippa@@ki.se}
 #' 
 #' @references
-#' Greenland, S.,  Longnecker, M. P. (1992). Methods for trend estimation from summarized dose-response data, with applications to meta-analysis. American journal of epidemiology, 135(11), 1301-1309.
 #' 
-#' Orsini, N., Bellocco, R.,  Greenland, S. (2006). Generalized least squares for trend estimation of summarized dose-response data. Stata Journal, 6(1), 40.
+#' Crippa A, Orsini N (2016). Multivariate Dose-Response Meta-Analysis: The dosresmeta R Package. Journal of Statistical Software, 72(1), 1-15.
+#' 
+#' Greenland S, Longnecker MP (1992). Methods for trend estimation from summarized dose-response data, with applications to meta-analysis. American journal of epidemiology, 135(11), 1301-1309.
+#' 
+#' Orsini N, Bellocco R,  Greenland S (2006). Generalized least squares for trend estimation of summarized dose-response data. Stata Journal, 6(1), 40.
 #'
-#' Liu, Q., Cook, N. R., Bergstrom, A., Hsieh, C. C. (2009). A two-stage hierarchical regression model for meta-analysis of epidemiologic nonlinear dose-response data. Computational Statistics & Data Analysis, 53(12), 4157-4167. 
+#' Gasparrini A, Armstrong B,  Kenward MG (2012). Multivariate meta-analysis for non-linear and other multi-parameter associations. Statistics in Medicine, 31(29), 3821-3839.
 #' 
-#' Gasparrini, A., Armstrong, B.,  Kenward, M. G. (2012). Multivariate meta-analysis for non-linear and other multi-parameter associations. Statistics in Medicine, 31(29), 3821-3839.
+#' Liu Q, Cook NR, Bergstrom A, Hsieh CC (2009). A two-stage hierarchical regression model for meta-analysis of epidemiologic nonlinear dose-response data.
+#' Computational Statistics & Data Analysis, 53(12), 4157-4167.
 #' 
 #' @seealso \code{\link{dosresmeta}}, \code{\link{grl}}, \code{\link{hamling}}
 #' 

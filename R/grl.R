@@ -34,10 +34,11 @@
 #' 
 #' @seealso \code{\link{hamling}}, \code{\link{dosresmeta}}
 #' 
-#' @references 
-#' Greenland, S., Longnecker, M. P. (1992). Methods for trend estimation from summarized dose-response data, with applications to meta-analysis. American journal of epidemiology, 135(11), 1301-1309.
+#' @references
+#'  
+#' Greenland S, Longnecker MP (1992). Methods for trend estimation from summarized dose-response data, with applications to meta-analysis. American journal of epidemiology, 135(11), 1301-1309.
 #' 
-#' Orsini, N., Li, R., Wolk, A., Khudyakov, P., Spiegelman, D. (2012). Meta-analysis for linear and nonlinear dose-response relations: examples, an evaluation of approximations, and software. 
+#' Orsini N, Li R, Wolk A, Khudyakov P, Spiegelman D (2012). Meta-analysis for linear and nonlinear dose-response relations: examples, an evaluation of approximations, and software. 
 #' American journal of epidemiology, 175(1), 66-73.
 #' 
 #'

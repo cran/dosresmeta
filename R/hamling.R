@@ -34,10 +34,11 @@
 #' 
 #' 
 #' @references 
-#' Hamling, J., Lee, P., Weitkunat, R., Ambuhl, M. (2008). Facilitating meta-analyses by deriving relative effect and precision estimates for alternative comparisons from a set of estimates presented
+#' 
+#' Hamling J, Lee P, Weitkunat R, Ambuhl M (2008). Facilitating meta-analyses by deriving relative effect and precision estimates for alternative comparisons from a set of estimates presented
 #' by exposure level or disease category. Statistics in medicine, 27(7), 954-970.
 #' 
-#' Orsini, N., Li, R., Wolk, A., Khudyakov, P., Spiegelman, D. (2012). Meta-analysis for linear and nonlinear dose-response relations: examples, an evaluation of approximations, and software. 
+#' Orsini N, Li R, Wolk A, Khudyakov P, Spiegelman D (2012). Meta-analysis for linear and nonlinear dose-response relations: examples, an evaluation of approximations, and software. 
 #' American journal of epidemiology, 175(1), 66-73.
 #' 
 #' @export hamling

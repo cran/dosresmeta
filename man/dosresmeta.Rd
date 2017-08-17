@@ -2,33 +2,43 @@
 % Please edit documentation in R/dosresmeta.R
 \name{dosresmeta}
 \alias{dosresmeta}
-\title{Performing multivariate dose-response meta-analysis}
+\alias{dosresmeta.fit}
+\title{Performing Multivariate Dose-Response Meta-Analysis}
 \usage{
-dosresmeta(formula, id, type, v, cases, n, data, intercept = F, center = T,
-  se, lb, ub, covariance = "gl", method = "reml", fcov, ucov,
-  alpha = 0.05, ...)
+dosresmeta(formula, id, v, type, cases, n, sd, data, mod = ~1,
+  intercept = F, center = T, se, lb, ub, covariance = "gl",
+  method = "reml", proc = "2stage", Slist, method.smd = "cohen",
+  control = list())
+
+dosresmeta.fit(X, Z, y, Slist, id, method, control, proc, mod, v, data)
 }
 \arguments{
-\item{formula}{an object of class "\code{\link{formula}}" offering a symbolic description of the dose-response functional relation. Terms in the formula need to be
+\item{formula}{an object of class "\code{\link{formula}}" offering a symbolic description of the dose-response functional relation. Terms in the formula can be
 provided in the \code{data} below.}
 
-\item{id}{an optional vector to specify the id variable for the studies included in the analysis.}
+\item{id}{an vector to specify the id variable for the studies included in the analysis. Optional if estimating a dose-response model from a single study.}
 
-\item{type}{a vector (or a string) to specify the study-specific design. The values for case-control, incidence-rate, and cumulative incidence data are \code{cc},
-\code{ir}, and \code{ci}.}
+\item{v}{a vector to specify the variances of the reported outcome. Alternatively the user can provide the standard error in the \code{se} argument, 
+or only for log relative risks, the confidence interval in the \code{lb} and \code{ub} arguments.}
 
-\item{v}{a vector to specify the variances of the reported log relative risks. Alternatively the user can provide the standard error in the \code{se} argument, or the confidence interval for the reported relative risks 
-in the \code{lb} and \code{ub} arguments.}
+\item{type}{an optional vector (or a string) required when the outcome is log relative risks. It specifies the study-specific design. 
+The values for case-control, incidence-rate, and cumulative incidence data are \code{cc}, \code{ir}, and \code{ci}, respectively.}
 
-\item{cases}{a vector to specify the number of cases for each exposure level.}
+\item{cases}{a vector to specify the number of cases for each exposure level. Required to reconstruct the (co)variance matrix for log relative risks.}
 
-\item{n}{a vector to specify the total number of subjects for each exposure level. For incidence-rate data \code{n} indicates the amount of person-time for each exposure level.}
+\item{n}{a vector to specify the total number of subjects for each exposure level. Required to reconstruct the (co)variance matrix for log relative risks.
+For incidence-rate data \code{n} indicates the amount of person-time for each exposure level.}
+
+\item{sd}{a vector to specify the standard deviation. Required to reconstruct the (co)variance matrix for differences and standardized mean differences.}
 
 \item{data}{a data frame (or object coercible by \code{\link{as.data.frame}} to a data frame) containing the variables in the previous arguments.}
 
+\item{mod}{an object of class "\code{\link{formula}}" offering a symbolic description of the meta-regression model (by default \code{mod = ~ 1}). Terms in the formula can be
+provided in the \code{data} below.}
+
 \item{intercept}{a logical value to specify if an intercept term needs to be included in the model. See details.}
 
-\item{center}{a logical value to specify if the exposures level need to be center at the referent ones. See details.}
+\item{center}{a logical value to specify if the design matrix need to be center at the referent ones. See details.}
 
 \item{se}{an optional vector to specify the standard error of the reported log relative risks; needed if \code{v} is not provided.}
 
@@ -36,96 +46,128 @@ in the \code{lb} and \code{ub} arguments.}
 
 \item{ub}{an optional vector to specify the upper bound of the confidence interval for the reported relative risks; needed if \code{v} and \code{se} are not provided.}
 
-\item{covariance}{method to approximate the coviariance among set of reported log relative risks, "\code{gl}" for the method proposed by Greenland and Longnecker, "\code{h}" for the method proposed by Hamling (default), "\code{fl}" for absolute floated
-risks presented by Easton D., "\code{user}" if provided by the user, or "\code{independent}" for assuming independence.}
+\item{covariance}{method to approximate the (co)variance matrix of the outcome. Options are "\code{gl}" for the method proposed by Greenland and Longnecker (default)
+, "\code{h}" for the method proposed by Hamling, "\code{md}" for mean differences, "\code{smd}" for standardized mean differences, and "\code{user}" 
+if provided by the user.}
 
-\item{method}{method used to estimate the pooled dose-response relation: "\code{fixed}" for fixed-effects models, "\code{ml}" or "\code{reml}" for random-effects models fitted through (restricted) maximum likelihood, and "\code{mm}" for random-effects models fitted through 
-method of moments. The default method is "\code{reml}". See \code{\link{mvmeta}}.}
+\item{method}{method used to estimate the (pooled) dose-response relation: "\code{fixed}" for fixed-effects models, "\code{ml}" or "\code{reml}" 
+for random-effects models fitted through (restricted) maximum likelihood, and "\code{mm}" for random-effects models fitted through method of moments (currently
+available only for the two stages procedure).}
 
-\item{fcov}{an optional vector to specify the avarage covariances for the set of reported log relative risks. It is required if \code{covariance = "fl"}.}
+\item{proc}{"\code{2stage}" (default) or "\code{1stage}" procedure. See \code{\link{dosresmeta-package}} for an overview.}
 
-\item{ucov}{an optional list of matrices to specify the covariance matrices for the set of reported log relative risks. It is required if \code{covariance = "user"}.}
+\item{Slist}{list of approximated or given (co)variance matrices.}
 
-\item{alpha}{a scalar to specify the alpha nominal value used in the published data, by defaul equal to .05.}
+\item{method.smd}{character string indicating the method to be used. Options are \code{cohens}, \code{hedges}, and \code{glass}. Required only if \code{covariance}
+equal "\code{smd}".}
 
-\item{\dots}{other useful agurments related to \code{\link{mvmeta}} model.}
+\item{control}{list of parameters for controlling the fitting process. These are passed to \code{\link{dosresmeta.control}} by \code{\link{dosresmeta.fit}}
+to replace otherwise selected default values.}
+
+\item{X}{processed design matrix of fixed effects.}
+
+\item{Z}{processed design matrix of random effects.}
+
+\item{y}{processed outcome vector.}
 }
 \value{
-The \code{dosresmeta} function typically returns a list of object of class \code{dosresmeta} which resembles a \code{\link{mvmetaObject}}, 
-with differences in case of trend estimation for a sigle study.
+The \code{dosresmeta} function typically returns a list of object of class \code{dosresmeta} representing the meta-analytical model fit, 
+as described in \code{\link{dosresmetaObject}}.
 }
 \description{
-Estimates a dose-response relation from either a single or multiple summarized data, taking into account the correlation among set of log relative risks. 
-The covariances are approximated according to two different methods, proposed respectively by Greeland S., Longnecker M., and Hamling J.; alternatively the user can provide directly the covariance matrices or the avarage covariances (Easton D.).
-The study-specific estimates are combined according to principles of multivariate random-effects meta-analysis.
+The function \code{dosresmeta} estimates a dose-response curve from either single or multiple summarized dose-response data, taking into account 
+the correlation among observations and heterogeneity across studies. The function \code{dosresmeta.fit} is a wrapper for actual fitting functions based on 
+different estimation methods, usually called internally. See \code{\link{dosresmeta-package}} for an overview.
 }
 \details{
-The function estimates the dose response-relation specified in the \code{formula} for each study included in the analysis. Typically the model does not have an intercept (\code{intercept = FALSE} by default) term since the log relative risk for the exposure 
-level (usually zero) is zero (RR = 1). For that reason, the values in the desing matrix need to be centered at the referent values, as described by Qin Liu et al, 2009. This is automatically done by the function when \code{center = TRUE} (default value).
-The study-specific trends are efficienly estimated taking into account the covariance among relative risks. For a theorical description see Orsini et al, 2006.
-The study specific trends are then combined according to the principles of multivariate random-effects meta-analysis, and relies on \code{\link{mvmeta}} package.
+The function defines all the elements required to estimate a dose-response association taking into account the correlation among the observations. 
+If the (co)variance matrix is not provided then it is approximated depending of the type of outcome specified through the \code{covariance} argument.
+The dose-response model is specified in the \code{formula}. Typically the outcome is expressed as a contrast to a reference exposure level, so that the model 
+does not have an intercept and the values in the design matrix need to be centered at the referent values, as described by Qin Liu et al, 2009. 
+This is internally done, respectively, when \code{intercept = FALSE} and \code{center = TRUE} (default values).
+
+The function calls the wrapper \code{dosresmeta.fit} to perform the actual fitting. The latter prepares the data and calls specific fitting functions, 
+depending on the chosen procedure and method. For the two stages procedure, the second part of the analysis is performed using the function \code{\link{mvmeta.fit}} 
+from the \code{\link{mvmeta}} package. Different estimator are implemented in the package. The estimation options available are
+\itemize{
+\item Fixed-effects
+\item Maximum likelihood (ML)
+\item Restricted maximum likelihood (REML)
+\item Method of moments (currently available only for the two stage procedure)
 }
-\note{
-The function requires the packages \code{\link{mvmeta}} and \code{\link{aod}} to be installed and loaded.
+
+The fitting procedure can be controlled through the additional terms specified in control, which are passed to the function \code{\link{dosresmeta.control}}.
 }
 \examples{
-## FIRST EXAMPLE: Single case-control study
+## First example: Single case-control study
 ## Linear trend estimation
-## Inspect data
 data("cc_ex")
 
 ## Fitting the model
 mod1 <- dosresmeta(formula = logrr ~ dose, type = "cc", cases = case,
-                  n = n, lb = lb, ub = ub, data= cc_ex)
+                   n = n, lb = lb, ub = ub, data= cc_ex)
 summary(mod1)
 ## Results
-predict(mod1, delta = 1)
+predict(mod1, delta = 1, expo = TRUE)
 
 
-## SECOND EXAMPLE: Multiple studies
+## Second example: Multiple studies
 ## Linear and quadratic trend using random-effects meta-analysis
-## Inspect data
 data("alcohol_cvd")
 
 ## Linear trend
 lin <- dosresmeta(formula = logrr ~ dose, type = type, id = id,
-                 se = se, cases = cases, n = n, data = alcohol_cvd) 
-## Summarize the results
+                  se = se, cases = cases, n = n, data = alcohol_cvd)
 summary(lin)
-predict(lin, delta = 1)
+## Predicted linear trend
+predict(lin, delta = 1, expo = TRUE)
 
 ## Non-linear (quadratic) trend
 quadr <- dosresmeta(formula = logrr ~ dose + I(dose^2), type = type, id = id,
-                   se = se, cases = cases, n = n, data = alcohol_cvd) 
-## Summarize the results
+                    se = se, cases = cases, n = n, data = alcohol_cvd)
 summary(quadr)
 
 ## Graphical results
-with(predict(quadr), {
- plot(dose, pred, log = "y", type = "l",
-      xlim = c(0, 45), ylim = c(.4, 2))
- lines(dose,  ci.lb, lty = 2)
- lines(dose, ci.ub, lty = 2)
- rug(dose, quiet = TRUE)
+with(predict(quadr, expo = TRUE, order = TRUE), {
+   plot(dose, pred, log = "y", type = "l",
+        xlim = c(0, 45), ylim = c(.4, 2))
+   lines(dose,  ci.lb, lty = 2)
+   lines(dose, ci.ub, lty = 2)
+   rug(dose, quiet = TRUE)
 })
 
+
+## Third example: Continous outcome (smd)
+data("ari")
+mod3 <- dosresmeta(formula = y ~ dose + I(dose^2), id = id,
+                   sd = sd, n = n, covariance = "smd", data = ari)
+summary(mod3)
+
+## Graphical results
+newdata <- data.frame(dose = seq(0, 30, 1))
+with(predict(mod3, newdata, order = TRUE), {
+   plot(dose, pred, type = "l",
+        ylim = c(0, .6))
+   lines(dose,  ci.lb, lty = 2)
+   lines(dose, ci.ub, lty = 2)
+   rug(dose, quiet = TRUE)
+})
+}
+\references{
+Greenland, S.,  Longnecker, M. P. (1992). Methods for trend estimation from summarized dose-response data, with applications to meta-analysis. 
+American journal of epidemiology, 135(11), 1301-1309.
+
+Orsini, N., Bellocco, R.,  Greenland, S. (2006). Generalized least squares for trend estimation of summarized dose-response data. Stata Journal, 6(1), 40.
+
+Liu, Q., Cook, N. R., Bergstrom, A., Hsieh, C. C. (2009). A two-stage hierarchical regression model for meta-analysis of epidemiologic nonlinear 
+dose-response data. Computational Statistics & Data Analysis, 53(12), 4157-4167. 
+
+Gasparrini, A., Armstrong, B.,  Kenward, M. G. (2012). Multivariate meta-analysis for non-linear and other multi-parameter associations. 
+Statistics in Medicine, 31(29), 3821-3839.
+}
+\seealso{
+\code{\link{dosresmeta-package}}, \code{\link{mvmeta}}, \code{\link{covar.logrr}}, \code{\link{covar.smd}}
 }
 \author{
 Alessio Crippa, \email{alessio.crippa@ki.se}
 }
-\references{
-Crippa A, Orsini N (2016). Multivariate Dose-Response Meta-Analysis: The dosresmeta R Package. Journal of Statistical Software, 72(1), 1-15.
-
-Greenland S, Longnecker MP (1992). Methods for trend estimation from summarized dose-response data, with applications to meta-analysis. American journal of epidemiology, 135(11), 1301-1309.
-
-Orsini N, Bellocco R,  Greenland S (2006). Generalized least squares for trend estimation of summarized dose-response data. Stata Journal, 6(1), 40.
-
-Gasparrini A, Armstrong B,  Kenward MG (2012). Multivariate meta-analysis for non-linear and other multi-parameter associations. Statistics in Medicine, 31(29), 3821-3839.
-
-Liu Q, Cook NR, Bergstrom A, Hsieh CC (2009). A two-stage hierarchical regression model for meta-analysis of epidemiologic nonlinear dose-response data.
-Computational Statistics & Data Analysis, 53(12), 4157-4167.
-}
-\seealso{
-\code{\link{dosresmeta}}, \code{\link{grl}}, \code{\link{hamling}}
-}
-

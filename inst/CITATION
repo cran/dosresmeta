@@ -16,7 +16,7 @@ bibentry(bibtype = "Article",
   textVersion  =
   paste("Alessio Crippa, Nicola Orsini (2016).",
         "Multivariate Dose-Response Meta-Analysis: The dosresmeta R Package.",
-        "Journal of Statistical Software, 72(1), 1-15.",
+        "Journal of Statistical Software, Code Snippets, 72(1), 1-15.",
         "doi:10.18637/jss.v072.c01")
 )
 

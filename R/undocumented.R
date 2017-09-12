@@ -37,11 +37,18 @@ glsfit <- function(Xlist, Zlist, ylist, Slist, nalist, Psi, onlycoef = TRUE){
 
 #' @noRd
 initpar <- function(Xlist, Zlist, ylist, Slist, nalist, q, control){
-   initPsi <- diag(0.001, q)
-   for (i in seq(control$igls.iter)) 
-      initPsi <- iter.igls(initPsi, Xlist, Zlist, ylist, Slist, nalist, q)
-   #  initPsi <- diag(0.001, p)
-   return(vechMat(initPsi))
+   if (!is.null(initPsi <- control$initPsi)) {
+      if (is.vector(initPsi)) 
+         initPsi <- xpndMat(initPsi)
+      } else {
+         initPsi <- diag(.0001, q)
+   }
+   if (control$igls.iter != 0){
+      for (i in seq(control$igls.iter)){
+         initPsi <- iter.igls(initPsi, Xlist, Zlist, ylist, Slist, nalist, q)
+      } 
+   }
+   vechMat(t(chol(initPsi)))
 }
 
 #' @noRd

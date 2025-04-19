@@ -167,7 +167,7 @@ NULL
 NULL
 
 
-#' Six published studies on the relation between alcohol intake and cardiovascular disease risk.
+#' Six published studies on the relation between alcohol intake and cardiovascular disease risk
 #'
 #' @name alcohol_cvd
 #' @description The dataset reports the summarized dose-response results from six observational
@@ -230,7 +230,7 @@ NULL
 NULL
 
 
-#' Eight published studies on the relation between alcohol intake and colon-rectal cancer.
+#' Eight published studies on the relation between alcohol intake and colorectal cancer
 #'
 #' @name alcohol_crc
 #' @description The dataset reports the summarized dose-response results from eight prospective
@@ -257,7 +257,7 @@ NULL
 NULL
 
 
-#' Four published studies on the relation between alcohol intake and lung cancer.
+#' Four published studies on the relation between alcohol intake and lung cancer
 #'
 #' @name alcohol_lc
 #' @description The dataset reports the summarized dose-response results from four prospective
@@ -377,14 +377,15 @@ NULL
 NULL
 
 
-#' Thirteen prospective studies on the relation between coffee consumption and cardiovascular mortality
+#' Additional two prospective studies on the relation between coffee consumption and all-cause mortality
 #'
-#' @name coffee_cvd
-#' @description The dataset reports the summarized dose-response results from thirteen prospective studies on the relation between coffee consumption
-#' and cardiovascular mortality.
+#' @name coffee_mort_add
+#' @description The dataset reports the summarized dose-response results from two additional prospective 
+#' studies on the relation between coffee consumption and all-cause mortality. The studies do not report
+#' information on the number of cases and participants/person-time.
 #'
 #' @docType data
-#' @format A data frame with 100 observations on the following 9 variables:
+#' @format A data frame with 109 observations on the following 11 variables:
 #' \tabular{ll}{
 #' \code{id} \tab id of the studies included in the analysis.\cr
 #' \code{author} \tab names of the first author.\cr
@@ -395,6 +396,42 @@ NULL
 #' \code{n} \tab total number of subjects (type = "ci") or person-years (type = "ir") for each exposure level.\cr
 #' \code{logrr} \tab natural logarithm of the adjusted risk estimates.\cr
 #' \code{se} \tab standard error for the logarithm of the adjusted risk estimates.\cr
+#' \code{gender} \tab factor variable for the gender of the partecipants.\cr
+#' \code{area} \tab factor variable for the study location.\cr
+#' }
+#'
+#' @author Alessio Crippa, <\email{alessio.crippa@@ki.se}>
+#' 
+#' @references
+#' 
+#' Crippa A, Discacciati A, Larsson SC, Wolk A, Orsini N. Coffee Consumption and Mortality from All Causes, Cardiovascular Disease, and Cancer: 
+#' A Dose-Response Meta-Analysis. Am J Epidemiol. 2014 Aug 24. pii: kwu194.
+#' 
+#' @keywords data
+NULL
+
+
+#' Thirteen prospective studies on the relation between coffee consumption and cardiovascular mortality
+#'
+#' @name coffee_cvd
+#' @description The dataset reports the summarized dose-response results from thirteen prospective studies on the relation between coffee consumption
+#' and cardiovascular mortality.
+#'
+#' @docType data
+#' @format A data frame with 100 observations on the following 12 variables:
+#' \tabular{ll}{
+#' \code{id} \tab id of the studies included in the analysis.\cr
+#' \code{author} \tab names of the first author.\cr
+#' \code{year} \tab year of publication.\cr
+#' \code{type} \tab code for study design.\cr
+#' \code{dose} \tab assigned dose levels.\cr
+#' \code{cases} \tab number of cases for each exposure level.\cr
+#' \code{n} \tab total number of subjects (type = "ci") or person-years (type = "ir") for each exposure level.\cr
+#' \code{logrr} \tab natural logarithm of the adjusted risk estimates.\cr
+#' \code{se} \tab standard error for the logarithm of the adjusted risk estimates.\cr
+#' \code{gender} \tab character variable for the gender of the partecipants.\cr
+#' \code{area} \tab character variable for the study location.\cr
+#' \code{smoking} \tab character variable for the type of smoking adjustment.\cr
 #' }
 #'
 #' @author Alessio Crippa, <\email{alessio.crippa@@ki.se}>

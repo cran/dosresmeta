@@ -13,7 +13,7 @@
 #' dimensional outcome, \eqn{p} predictors and \eqn{m} studies used for fitting
 #' the model. For the two-stage analysis the dimensions refer to \eqn{p}
 #' outcome parameters, no predictor (only the intercept) and \eqn{m} studies.
-#' The following components needs to be included in a legitimate mvmeta object: 
+#' The following components needs to be included in a legitimate dosresmeta object: 
 #' \tabular{ll}{ 
 #' \code{coefficients} \tab a \eqn{p}-dimensional vector of the fixed-effects coefficients. \cr 
 #' \code{vcov} \tab estimated \eqn{p \times p}{p x p} (co)variance matrix of the fixed-effects coefficients. \cr
@@ -51,11 +51,11 @@
 #' Specifically-written method functions are defined for predict (standard predictions). The qtest method performs the Cochran Q test for heterogeneity only for a two-stage analysis. 
 #' Other methods have been produced for summary, logLik, coef, and vcov. Printing functions for the objects of classes defined above are also provided.
 #' All the methods above are visible (exported from the namespace) and documented. In additions, several default method functions for regression are also 
-#' applicable to objects of class "mvmeta", such as fitted, residuals, AIC, BIC and update, among others.
+#' applicable to objects of class "mixmeta", such as fitted, residuals, AIC, BIC and update, among others.
 #' 
 #' @author Alessio Crippa, \email{alessio.crippa@@ki.se}
 #' 
-#' @seealso \code{\link{dosresmeta}}, \code{\link{dosresmeta-package}}, \code{\link{mvmetaObject}}
+#' @seealso \code{\link{dosresmeta}}, \code{\link{dosresmeta-package}}, \code{\link[mixmeta]{mixmetaObject}}
 
 NULL
 
@@ -161,6 +161,7 @@ logLik.dosresmeta <- function (object, ...){
 #' @param x an object of class \code{dosresmeta} or \code{summary.dosresmeta} produced by \code{\link{dosresmeta}} or \code{summary.dosresmeta}, respectively.
 #' @param ci.level the confidence level used for defining the confidence intervals for the estimates of the (fixed-effects) coefficients.
 #' @param digits an integer specifying the number of digits to which printed results must be rounded.
+#' @param signif.stars logical. If TRUE, 'significance stars' are printed for each coefficient.
 #' @param \dots further arguments passed to or from other methods.
 #'
 #' @details the \code{print} method for class \code{dosresmeta} only returns basic information of the fitted model, namely the call, 
@@ -274,7 +275,8 @@ summary.dosresmeta <- function(object, ci.level = 0.95, ...){
 #' @method print summary.dosresmeta
 #' @export
 
-print.summary.dosresmeta <- function(x, digits = 4, ...){
+print.summary.dosresmeta <- function(x, digits = max(3, getOption("digits") - 3), 
+                                     signif.stars = getOption("show.signif.stars"), ...){
    methodname <- c("reml", "ml", "fixed")
    methodlabel <- c("REML", "ML", "Fixed")
    covariancename <- c("h", "gl", "md", "smd", "user", "indep")
@@ -304,15 +306,21 @@ print.summary.dosresmeta <- function(x, digits = 4, ...){
        pchi2, "\n", sep = "")
    cat("\n")
    cat("Fixed-effects coefficients", "\n", sep = "")
-   signif <- symnum(x$coefficients[, "Pr(>|z|)"], corr = FALSE, 
-                    na = FALSE, cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1), 
-                    symbols = c("***", "**", "*", ".", " "))
    tabletot <- formatC(x$coefficients, digits = digits, format = "f")
-   tabletot <- cbind(tabletot, signif)
-   colnames(tabletot)[7] <- ""
+   if (signif.stars){
+      signif <- symnum(x$coefficients[, "Pr(>|z|)"], corr = FALSE, 
+                       na = FALSE, cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1), 
+                       symbols = c("***", "**", "*", ".", " "))
+      tabletot <- cbind(tabletot, signif)
+      colnames(tabletot)[7] <- ""
+   }
    #rownames(tabletot) <- x$lab$p
    print(tabletot, quote = FALSE, right = TRUE, print.gap = 2)
-   cat("---\nSignif. codes: ", attr(signif, "legend"), "\n\n")
+   if (signif.stars){
+      cat("---\nSignif. codes: ", attr(signif, "legend"), "\n\n")
+   } else {
+      cat("\n\n")
+   }
    k <- x$dim$q #ifelse(x$proc == "2stages", x$dim$k, x$dim$p)
    if (!x$method == "fixed"){
       cat("Between-study random-effects (co)variance components", 
@@ -380,6 +388,7 @@ print.summary.dosresmeta <- function(x, digits = 4, ...){
 #' stored in the component \code{Slist} of \code{dosresmeta} objects. This is equal to test the hypothesis that the between-study (co)variance matrix is 
 #' a zero matrix, and there is no random deviation in study-specific estimates.
 #' 
+#' @rdname qtest.dosresmeta
 #' @method qtest dosresmeta
 #' @export
 
@@ -518,6 +527,7 @@ print.qtest.dosresmeta <- function (x, digits = 3, ...){
 #' @param xref_pos an optional scalar to indicate the position of the referent for the predicted relative risks. See details.
 #' @param order logical to indicate if the predictions need to be sorted by exposure levels.
 #' @param delta an optional scalar to specify to predict the linear trend related to that increase.
+#' @param safe_sort2stage logical value to ensure the correct order of coefficients for prediction. Only needed for 2stage.
 #' @param \dots further arguments passed to or from other methods.
 #' @details The method function \code{predict} produces predicted values from \code{dosresmeta} objects. When more than one study is included in the analysis,
 #' estimated predictions are only based on the fixed part of the model.
@@ -587,7 +597,8 @@ print.qtest.dosresmeta <- function (x, digits = 3, ...){
 
 predict.dosresmeta <- function(object, newdata, xref, expo = FALSE, xref_vec,
                                ci.incl = TRUE, se.incl = FALSE, xref_pos = 1,
-                               delta, order = FALSE, ci.level = 0.95, ...){
+                               delta, order = FALSE, ci.level = 0.95, 
+                               safe_sort2stage = TRUE, ...){
    if (!missing(delta)){
       if (object$dim$q > 1L)
          stop("'delta' option available only for linear trend")
@@ -630,6 +641,10 @@ predict.dosresmeta <- function(object, newdata, xref, expo = FALSE, xref_vec,
       X <- scale(X, xref, scale = FALSE)
    }
    pred <- tcrossprod(X, rbind(c(t(object$coefficients))))
+   if (object$proc == "2stage" & safe_sort2stage == TRUE & object$mod != ~ 1) {
+      pred <- tcrossprod(X[, sort(colnames(X))], rbind(c(t(
+         object$coefficients[sort(names(object$coefficients))]))))
+   }
    fit <- if (expo == T) {
       cbind(fit, exp(pred))
    } else {
@@ -690,6 +705,7 @@ predict.dosresmeta <- function(object, newdata, xref, expo = FALSE, xref_vec,
 #' blup(lin)
 #' blup(quadr)
 #' 
+#' @rdname blup.dosresmeta
 #' @method blup dosresmeta
 #' @export 
 

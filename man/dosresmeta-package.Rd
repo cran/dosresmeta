@@ -56,19 +56,19 @@ as AIC and likelihood ratio test, purticularly useful in a one-stage procedure. 
 \section{Functions and data included in the package}{
 
 
-The structure of the package and the internal functions resemble those of the \code{\link{mvmeta}} package. See \code{\link{mvmeta-package}} for a general overview.
+The structure of the package and the internal functions resemble those of the \code{\link[mixmeta]{mixmeta}} package. See \code{\link[mixmeta]{mixmeta-package}} for a general overview.
 The main function is \code{\link{dosresmeta}}, which performs the various models illustrated above. The function returns a list object of class
 "\code{dosresmeta}" (see \code{\link{dosresmetaObject}}).
 
 The estimation is carried out internally through \code{\link{dosresmeta.fit}}, a wrapper which prepares the data and calls specific estimation functions
-for fitting the models, depending on the chosen procedure. For the two-stage procedure, the second part of the analysis is performed using the function \code{\link{mvmeta.fit}}
+for fitting the models, depending on the chosen procedure. For the two-stage procedure, the second part of the analysis is performed using the function \code{\link[mixmeta]{mixmeta.fit}}
 while estimators for random-effects models are implemented in the functions \code{\link{dosresmeta.ml}} and \code{\link{dosresmeta.reml}} for
 (restricted) maximum likelihood. For likelihood-based methods, iterative optimizations algorithms are used for maximizing
 the (restricted) likelihood. Fitting parameter options are set by \code{\link{dosresmeta.control}}.
 
 Method functions are available for objects of class "\code{dosremeta}" (see \code{\link{dosresmetaObject}} for a complete list). The method \code{\link{summary}}
 produces a list of class "\code{summary.dosremeta}" for summarizing the fit of the model and providing additional results. The method function \code{\link{predict}}
-computes predicted values, optionally for a set of new values of the predictors. \code{\link{blup}} gives the (empirical) best linear unbiased predictions for the unobserved random-effects.
+computes predicted values, optionally for a set of new values of the predictors. \code{blup} gives the (empirical) best linear unbiased predictions for the unobserved random-effects.
 Other default or specific method functions for regression can be used on objects of class "\code{dosremeta}", such as \code{logLik}, \code{AIC} and \code{BIC}, among others.
 The method function \code{qtest.dosresmeta} (producing an object with class of the same name) performs the Cochran Q test for (residual) heterogeneity currently appropriate only for the two-stage approach.
 
@@ -98,7 +98,7 @@ Gasparrini, A., Armstrong, B.,  Kenward, M. G. (2012). Multivariate meta-analysi
 Statistics in Medicine, 31(29), 3821-3839.
 }
 \seealso{
-\code{\link{dosresmeta}} \code{\link{mvmeta}}
+\code{\link{dosresmeta}} \code{\link[mixmeta]{mixmeta}}
 }
 \author{
 Alessio Crippa, \email{alessio.crippa@ki.se}

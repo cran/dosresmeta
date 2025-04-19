@@ -4,9 +4,9 @@ knitr::opts_chunk$set(prompt = TRUE, results = "markdown", comment = NA,  fig.wi
 options(prompt = "R> ", continue = "+  ", width = 70, useFancyQuotes = FALSE)
 
 ## ----usage, eval=FALSE, prompt = FALSE, tidy=FALSE------------------
-#  dosresmeta(formula, id, type, v, cases, n, data, intercept = F, center = T,
-#    se, lb, ub, covariance = "gl", method = "reml", fcov, ucov,
-#    alpha = 0.05, ...)
+# dosresmeta(formula, id, type, v, cases, n, data, intercept = F, center = T,
+#   se, lb, ub, covariance = "gl", method = "reml", fcov, ucov,
+#   alpha = 0.05, ...)
 
 ## ----loading, include = F-------------------------------------------
 library("dosresmeta")
